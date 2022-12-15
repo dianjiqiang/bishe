@@ -16,6 +16,13 @@ export const AppStyle = styled.div`
       top: 50%;
       transform: translate(-50%, -50%);
     }
+    img {
+      object-fit: fill;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
   width: 100vw;
   height: 100vh;

@@ -1,5 +1,7 @@
 import keyieRequest from '..'
 
-export function getHomeTitle() {
-  return keyieRequest.getRequest('/title')
+export function postHomeLogin() {
+  return keyieRequest.postRequest('/login', {
+    data: [{ username: 'yzz', password: '123456' }]
+  })
 }

@@ -18,7 +18,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/': {
-        target: 'http://www.meant.cc:7890',
+        target: 'http://localhost:8000',
         changeOrigin: true,
         pathRewrite: {
           '^/loc': ''

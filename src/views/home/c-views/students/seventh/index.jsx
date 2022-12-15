@@ -72,7 +72,7 @@ const Seventh = memo(() => {
         if (user !== userRef.current) {
           userRef.current = user
           const newData = []
-          tableDataRef.current.forEach((item) => {
+          tableData.forEach((item) => {
             if (item.name.indexOf(user) !== -1) {
               newData.push(item)
             }

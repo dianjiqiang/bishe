@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const studentsSlice = createSlice({
-  name: 'student',
+  name: 'techers',
   initialState: {
     seven: [
       {
