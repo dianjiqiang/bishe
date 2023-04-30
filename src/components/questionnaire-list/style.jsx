@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const QuestionnaireListStyle = styled.div`
   box-sizing: border-box;
@@ -8,6 +8,12 @@ export const QuestionnaireListStyle = styled.div`
   .ben-card {
     margin-top: 5px;
     margin-bottom: 22px;
+    .is-null {
+      margin: 20px 0;
+      font-size: 24px;
+      font-family: "黑体";
+      font-weight: 700;
+    }
   }
   .el-card {
     display: flex;
@@ -27,11 +33,17 @@ export const QuestionnaireListStyle = styled.div`
         font-family: Adobe Heiti Std;
         font-weight: normal;
         color: #666666;
+        .involve {
+          margin-left: 10px;
+        }
       }
       .right {
         font-size: 14px;
         font-weight: normal;
         color: #666666;
+        .que-status {
+          color: #03cad7;
+        }
         .status,
         .reply,
         .author,
@@ -141,4 +153,4 @@ export const QuestionnaireListStyle = styled.div`
       }
     }
   }
-`
+`;

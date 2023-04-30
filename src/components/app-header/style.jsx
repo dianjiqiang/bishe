@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const AppHeaderStyle = styled.div`
   box-sizing: border-box;
@@ -18,6 +18,12 @@ export const AppHeaderStyle = styled.div`
       width: 30px;
       height: 30px;
     }
+    .exit-btn {
+      text-align: center;
+      background: #36d1dc;
+      border: none;
+      box-shadow: 0px 1px 43px 0px rgba(0, 0, 0, 0.07);
+    }
     .name {
       /* position: relative;
       bottom: -2px; */
@@ -32,4 +38,4 @@ export const AppHeaderStyle = styled.div`
   .left {
     width: 200px;
   }
-`
+`;

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const AppStyle = styled.div`
   .bg-bilibili {
@@ -24,6 +24,22 @@ export const AppStyle = styled.div`
       transform: translate(-50%, -50%);
     }
   }
+  .isLoading {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(111, 111, 111, 0.3);
+    .loading {
+      object-fit: fill;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
   width: 100vw;
   height: 100vh;
-`
+`;

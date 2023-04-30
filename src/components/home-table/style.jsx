@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const HomeTableStyle = styled.div`
   box-sizing: border-box;
@@ -15,4 +15,17 @@ export const HomeTableStyle = styled.div`
     overflow: auto;
     height: 86vh;
   }
-`
+  .tianxiexq {
+    user-select: none;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+    .cz {
+      display: flex;
+      align-items: center;
+    }
+    :hover {
+      border: 1px solid #629cf3;
+    }
+  }
+`;

@@ -1,6 +1,14 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const TheFillStyle = styled.div`
+  .delete-topic {
+    :hover {
+      text-decoration: underline;
+    }
+    cursor: pointer;
+    user-select: none;
+    color: #ff4d4f;
+  }
   margin-top: 30px;
   padding-bottom: 10px;
   .title {
@@ -21,4 +29,4 @@ export const TheFillStyle = styled.div`
     position: relative;
     height: 30px;
   }
-`
+`;

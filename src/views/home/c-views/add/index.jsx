@@ -1,32 +1,32 @@
-import React, { memo, useState, useCallback } from 'react'
-import { AddStyle } from './style'
+import React, { memo, useState, useCallback } from "react";
+import { AddStyle } from "./style";
 
-import Card from '@/base-ui/card'
-import RadioGroup from '@mui/material/RadioGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Radio from '@mui/material/Radio'
+import Card from "@/base-ui/card";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
 
-import Fraction from './c-cpns/fraction'
-import NoFraction from './c-cpns/nofraction'
-import { useEffect } from 'react'
+import Fraction from "./c-cpns/fraction";
+import NoFraction from "./c-cpns/nofraction";
+import { useEffect } from "react";
 
 const Add = memo(() => {
-  const [radioVal, setRadioVal] = useState('')
+  const [radioVal, setRadioVal] = useState("");
   const handleTypeChange = useCallback((e) => {
-    setRadioVal(e.target.value)
-  }, [])
+    setRadioVal(e.target.value);
+  }, []);
 
   //判断用户点击的什么类型问卷
-  const [questionnaireRef, setQuestionnaireRef] = useState('')
+  const [questionnaireRef, setQuestionnaireRef] = useState("");
   useEffect(() => {
-    if (radioVal === 'fraction') {
-      setQuestionnaireRef(<Fraction></Fraction>)
-    } else if (radioVal === 'nofraction') {
-      setQuestionnaireRef(<NoFraction></NoFraction>)
+    if (radioVal === "fraction") {
+      setQuestionnaireRef(<Fraction></Fraction>);
+    } else if (radioVal === "nofraction") {
+      setQuestionnaireRef(<NoFraction></NoFraction>);
     } else {
-      setQuestionnaireRef(undefined)
+      setQuestionnaireRef(undefined);
     }
-  }, [radioVal])
+  }, [radioVal]);
 
   return (
     <AddStyle>
@@ -41,15 +41,23 @@ const Add = memo(() => {
               value={radioVal}
               onChange={(e) => handleTypeChange(e)}
             >
-              <FormControlLabel value="fraction" control={<Radio />} label="是否型问卷" />
-              <FormControlLabel value="nofraction" control={<Radio />} label="观点类问卷" />
+              <FormControlLabel
+                value="fraction"
+                control={<Radio />}
+                label="是否型问卷"
+              />
+              <FormControlLabel
+                value="nofraction"
+                control={<Radio />}
+                label="观点类问卷"
+              />
             </RadioGroup>
           </div>
           {questionnaireRef}
         </div>
       </Card>
     </AddStyle>
-  )
-})
+  );
+});
 
-export default Add
+export default Add;

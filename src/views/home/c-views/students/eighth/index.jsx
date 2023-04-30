@@ -1,112 +1,129 @@
-import React, { memo, useEffect, useState, useCallback, useRef } from 'react'
-import { SeventhStyle } from './style'
+import React, { memo, useEffect, useState, useCallback, useRef } from "react";
+import { SeventhStyle } from "./style";
 
-import HomeTop from '@/components/home-top'
-import HomeTable from '@/components/home-table'
-import { useSelector } from 'react-redux'
+import HomeTop from "@/components/home-top";
+import HomeTable from "@/components/home-table";
+import { useDispatch, useSelector } from "react-redux";
 
-import { dataKey } from './data.config'
+import { dataKey } from "./data.config";
+import { getStudentListEight } from "@/store/module/students";
 
 const Seventh = memo(() => {
   const { seven } = useSelector((state) => ({
-    seven: state.students.eight
-  }))
-  const [options, setOptions] = useState([])
-  const [tableData, setTableData] = useState([])
-  const [plus, setPlus] = useState([])
-  const tableDataRef = useRef() //保存原数据
+    seven: state.students.eight,
+  }));
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getStudentListEight());
+  }, [dispatch]);
+  const [options, setOptions] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [plus, setPlus] = useState([]);
+  const tableDataRef = useRef(); //保存原数据
   // 第一次进入
   useEffect(() => {
     setOptions(
       seven.map((item) => {
-        const res = {}
-        res.name = item.name
-        res.value = item.name
-        return res
+        const res = {};
+        res.name = item.name;
+        res.value = item.name;
+        return res;
       })
-    )
-    setTableData(seven[0]?.students)
-    tableDataRef.current = seven[0]?.students
+    );
+    setTableData(seven[0]?.students);
+    tableDataRef.current = seven[0]?.students;
     const plus = [
       <span className="plus">班主任: {seven[0]?.headTeacher}</span>,
       <span className="plus">已发放问卷数: {seven[0]?.distributed}</span>,
       <span className="plus">
         已完成问卷数:
-        <span style={{ color: seven[0]?.distributed !== seven[0]?.allNumber ? '#f37335' : 'auto' }}>
+        <span
+          style={{
+            color:
+              seven[0]?.distributed !== seven[0]?.allNumber
+                ? "#f37335"
+                : "auto",
+          }}
+        >
           {seven[0]?.allNumber}
         </span>
-      </span>
-    ]
-    setPlus(plus)
-  }, [seven])
+      </span>,
+    ];
+    setPlus(plus);
+  }, [seven]);
 
   // 选项发生改变
   const changeOption = useCallback(
     (payload) => {
       seven.forEach((item) => {
         if (item.name === payload) {
-          setTableData(item.students)
-          tableDataRef.current = seven[0]?.students
+          setTableData(item.students);
+          tableDataRef.current = seven[0]?.students;
           const plus = [
             <span className="plus">班主任: {item.headTeacher}</span>,
             <span className="plus">已发放问卷数: {item.distributed}</span>,
             <span className="plus">
               已完成问卷数:
-              <span style={{ color: item.distributed !== item.allNumber ? '#f37335' : 'auto' }}>
+              <span
+                style={{
+                  color:
+                    item.distributed !== item.allNumber ? "#f37335" : "auto",
+                }}
+              >
                 {seven[0]?.allNumber}
               </span>
-            </span>
-          ]
-          setPlus(plus)
+            </span>,
+          ];
+          setPlus(plus);
         }
-      })
+      });
     },
     [seven]
-  )
+  );
 
   // 点击了搜索
-  const userRef = useRef()
+  const userRef = useRef();
   const searchUser = useCallback(
     (user) => {
       if (user) {
         if (user !== userRef.current) {
-          userRef.current = user
-          const newData = []
+          userRef.current = user;
+          const newData = [];
           tableData.forEach((item) => {
             if (item.name.indexOf(user) !== -1) {
-              newData.push(item)
+              newData.push(item);
             }
-          })
-          setTableData(newData)
-          return
+          });
+          setTableData(newData);
+          return;
         }
-        const newData = []
+        const newData = [];
         tableData.forEach((item) => {
           if (item.name.indexOf(user) !== -1) {
-            newData.push(item)
+            newData.push(item);
           }
-        })
-        setTableData(newData)
+        });
+        setTableData(newData);
       } else {
-        setTableData(tableDataRef.current)
+        setTableData(tableDataRef.current);
       }
     },
     [tableData]
-  )
+  );
   return (
     <SeventhStyle>
       <HomeTop
-        title="八年级组"
+        title="二年级组"
         options={options}
-        optionsTootip={'请选择班级'}
+        optionsTootip={"请选择班级"}
         changeOption={changeOption}
-        defaultValue="八一班"
+        defaultValue="二(1)班"
         plus={plus}
         searchUser={searchUser}
       ></HomeTop>
       <HomeTable tableData={tableData} dataKey={dataKey}></HomeTable>
     </SeventhStyle>
-  )
-})
+  );
+});
 
-export default Seventh
+export default Seventh;

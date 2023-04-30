@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const HomeTopStyle = styled.div`
   box-sizing: border-box;
@@ -53,4 +53,4 @@ export const HomeTopStyle = styled.div`
       }
     }
   }
-`
+`;

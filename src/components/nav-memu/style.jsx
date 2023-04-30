@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const NavMenuStyle = styled.div`
   position: fixed;
@@ -19,7 +19,7 @@ export const NavMenuStyle = styled.div`
     }
     .icon {
       width: 50px;
-      padding-left: 40px;
+      padding-left: 27px;
     }
   }
   .light {
@@ -28,4 +28,4 @@ export const NavMenuStyle = styled.div`
     margin-top: 60px;
     width: 200px;
   }
-`
+`;

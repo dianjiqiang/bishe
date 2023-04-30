@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const FractionStyle = styled.div`
   .btn {
@@ -18,6 +18,13 @@ export const FractionStyle = styled.div`
       width: 200px;
       box-sizing: border-box;
     }
+    .submit-items {
+      margin-left: 40px;
+    }
+    .template-select {
+      width: 200px;
+      margin-left: 40px;
+    }
     .title-input:not(:focus) {
       border: none;
       color: #02cad7;
@@ -28,4 +35,4 @@ export const FractionStyle = styled.div`
       max-width: auto;
     }
   }
-`
+`;

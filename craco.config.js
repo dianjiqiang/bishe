@@ -15,17 +15,17 @@ module.exports = {
       },
     },
   ],
-  devServer: {
-    proxy: {
-      "/": {
-        target: "http://localhost:3303/",
-        changeOrigin: true,
-        pathRewrite: {
-          "^/loc": "",
-        },
-      },
-    },
-  },
+  // devServer: {
+  //   proxy: {
+  //     "/api/": {
+  //       target: "http://localhost:3303/",
+  //       changeOrigin: true,
+  //       pathRewrite: {
+  //         "^/api/": "",
+  //       },
+  //     },
+  //   },
+  // },
   webpack: {
     alias: {
       "@": path.resolve(__dirname, "src"),

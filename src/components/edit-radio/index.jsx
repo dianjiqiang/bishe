@@ -1,78 +1,121 @@
-import React, { memo, useState } from 'react'
-import { EditRadioStyle } from './style'
+import React, { memo, useState, useEffect } from "react";
+import { EditRadioStyle } from "./style";
 
-import { Button, Input } from 'antd'
-import { useCallback } from 'react'
-import classNames from 'classnames'
+import { Button, Input } from "antd";
+import { useCallback } from "react";
+import classNames from "classnames";
 
 const EditRadio = memo((props) => {
-  const { handleSubmitClick, noFraction } = props
-  const [options, setOptions] = useState([{ value: '', label: '' }])
+  const { handleSubmitClick, noFraction } = props;
+  const [options, setOptions] = useState([{ value: "", label: "" }]);
+  // 如果是有分数的问卷 默认是score = 0
+  useEffect(() => {
+    if (!noFraction) {
+      setOptions([{ value: "", label: "", score: 0 }]);
+    }
+  }, [noFraction]);
 
   //修改了标题
-  const [titleVal, setTitleVal] = useState('')
+  const [titleVal, setTitleVal] = useState("");
   const changeTitle = useCallback((e) => {
-    setTitleVal(e.target.value)
-  }, [])
+    setTitleVal(e.target.value);
+  }, []);
 
   // 修改了分值
-  const [scoreVal, setScoreVal] = useState(0)
+  const [scoreVal, setScoreVal] = useState(0);
   const changeScore = useCallback((e) => {
-    setScoreVal(e.target.value)
-  }, [])
+    setScoreVal(e.target.value);
+  }, []);
 
   // 点击了添加选项
   const handleAddClick = useCallback(() => {
-    const newOptions = [...options]
-    if (noFraction) {
-      newOptions.push({ value: '', label: '' })
-    } else {
-      newOptions.push({ value: '', score: 0, label: '' })
+    if (options.length >= 8) {
+      React.showMessage("最多只能添加8个选项", "warning");
+      return;
     }
-    setOptions(newOptions)
-  }, [options, noFraction])
+    const newOptions = [...options];
+    if (noFraction) {
+      newOptions.push({ value: "", label: "" });
+    } else {
+      newOptions.push({ value: "", score: 0, label: "" });
+    }
+    setOptions(newOptions);
+  }, [options, noFraction]);
 
   // 改变了题目选项
   const changeVal = useCallback(
     (e, index) => {
-      const newOptions = [...options]
-      newOptions[index].value = e.target.value
-      newOptions[index].label = e.target.value
-      setOptions(newOptions)
+      const newOptions = [...options];
+      newOptions[index].value = e.target.value;
+      newOptions[index].label = e.target.value;
+      setOptions(newOptions);
     },
     [options]
-  )
+  );
 
   // 改变了题目分值
   const changeValScore = useCallback(
     (e, index) => {
-      const newOptions = [...options]
-      newOptions[index].score = e.target.value
-      setOptions(newOptions)
+      const newOptions = [...options];
+      newOptions[index].score = e.target.value;
+      setOptions(newOptions);
     },
     [options]
-  )
+  );
 
   //提交了表单
   const handleClick = useCallback(() => {
-    let newObj = {}
+    if (titleVal === "") {
+      React.showMessage("请补充题目", "warning");
+      return;
+    }
+    if (scoreVal === "" && !noFraction) {
+      React.showMessage("请补充题目分数", "warning");
+      return;
+    }
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].label === "") {
+        React.showMessage("请补充完所有的选项标题后添加题目", "warning");
+        return;
+      }
+      if (!noFraction) {
+        if (options[i].score === "") {
+          React.showMessage("请补充分数", "warning");
+          return;
+        }
+      }
+    }
+    let newObj = {};
     if (noFraction) {
       newObj = {
         title: titleVal,
         options,
-        type: 'radio'
-      }
+        type: "radio",
+      };
     } else {
       newObj = {
         title: titleVal,
         score: scoreVal,
         options,
-        type: 'radio'
-      }
+        type: "radio",
+      };
     }
-    console.log(newObj)
-    handleSubmitClick(newObj)
-  }, [titleVal, scoreVal, options, handleSubmitClick, noFraction])
+    handleSubmitClick(newObj);
+  }, [titleVal, scoreVal, options, handleSubmitClick, noFraction]);
+
+  // 删除选项
+  const handleDeleteClick = useCallback(
+    (index) => {
+      if (options.length === 1) {
+        React.showMessage("您必须得保留一个选项", "error");
+        return;
+      }
+      const newOptions = [...options];
+      newOptions.splice(index, 1);
+      setOptions(newOptions);
+    },
+    [options]
+  );
   return (
     <EditRadioStyle>
       <div className="title">
@@ -87,11 +130,16 @@ const EditRadio = memo((props) => {
         </label>
         {!noFraction ? (
           <label>
-            <span style={{ paddingLeft: '20px' }}>分值 : </span>
-            <Input className="inputs-scro" type="number" value={scoreVal} onChange={(e) => changeScore(e)} />
+            <span style={{ paddingLeft: "20px" }}>分值 : </span>
+            <Input
+              className="inputs-scro"
+              type="number"
+              value={scoreVal}
+              onChange={(e) => changeScore(e)}
+            />
           </label>
         ) : (
-          ''
+          ""
         )}
       </div>
       <div className="options">
@@ -114,15 +162,22 @@ const EditRadio = memo((props) => {
                 onChange={(e) => changeValScore(e, index)}
               />
             ) : (
-              ''
+              ""
             )}
+            <Button
+              className="delete-option"
+              danger
+              onClick={() => handleDeleteClick(index)}
+            >
+              删除选项
+            </Button>
             {index + 1 === options.length ? (
-              <Button onClick={() => handleAddClick()} className="xxxx">
-                {' '}
+              <Button onClick={() => handleAddClick(index)} className="xxxx">
+                {" "}
                 + 添加选项
               </Button>
             ) : (
-              ''
+              ""
             )}
           </div>
         ))}
@@ -131,7 +186,7 @@ const EditRadio = memo((props) => {
         <Button onClick={() => handleClick()}>确定添加</Button>
       </div>
     </EditRadioStyle>
-  )
-})
+  );
+});
 
-export default EditRadio
+export default EditRadio;

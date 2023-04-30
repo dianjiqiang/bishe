@@ -1,121 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { getItem, setItem } from "@/utils/localstorage";
+
 const homeSlice = createSlice({
   name: "home",
   initialState: {
     role: "administrator",
-    MenuItem: [
-      {
-        title: "问卷列表",
-        id: "/questionnaire",
-        path: "/questionnaire",
-        children: [
-          {
-            title: "问卷汇总",
-            path: "/home/questionnaire/summary",
-            id: "/home/questionnaire/summary",
-          },
-          {
-            title: "问卷填写",
-            path: "/home/questionnaire/fill",
-            id: "/home/questionnaire/fill",
-          },
-          {
-            title: "收藏夹",
-            path: "/home/questionnaire/favorites",
-            id: "/home/questionnaire/favorites",
-          },
-          {
-            title: "回收站",
-            path: "/home/questionnaire/recycling",
-            id: "/home/questionnaire/recycling",
-          },
-        ],
-      },
-      {
-        title: "教师列表",
-        id: "/teachers",
-        path: "/teachers",
-        children: [
-          {
-            title: "七年级组",
-            id: "/home/techers/seventh",
-            path: "/home/techers/seventh",
-          },
-          {
-            title: "八年级组",
-            id: "/home/techers/eighth",
-            path: "/home/techers/eighth",
-          },
-          {
-            title: "九年级组",
-            id: "/home/techers/ninth",
-            path: "/home/techers/ninth",
-          },
-        ],
-      },
-      {
-        title: "学生列表",
-        id: "/students",
-        path: "/students",
-        children: [
-          {
-            title: "七年级组",
-            id: "/home/students/seventh",
-            path: "/home/students/seventh",
-          },
-          {
-            title: "八年级组",
-            id: "/home/students/eighth",
-            path: "/home/students/eighth",
-          },
-          {
-            title: "九年级组",
-            id: "/home/students/ninth",
-            path: "/home/students/ninth",
-          },
-        ],
-      },
-      // {
-      //   title: '问卷操作',
-      //   id: '/add',
-      //   path: '/add',
-      //   children: [
-      //     {
-      //       title: '添加问卷',
-      //       path: '/home/add',
-      //       id: '/home/add'
-      //     }
-      //   ]
-      // }
-    ],
+    MenuItem: getItem("MenuItem") ?? [],
     userMessage: {},
   },
   reducers: {
     changeUserMessage(state, { payload }) {
       state.MenuItem = payload.MenuItem;
-      window.localStorage.setItem("MenuItem", JSON.stringify(payload.MenuItem));
+      if (payload.MenuItem) setItem("MenuItem", payload.MenuItem);
       state.userMessage.charge = payload?.charge;
-      window.localStorage.setItem("charge", JSON.stringify(payload.charge));
+      if (payload.charge) setItem("charge", payload.charge);
       state.userMessage.class_id = payload?.class_id;
-      window.localStorage.setItem("class_id", JSON.stringify(payload.class_id));
+      if (payload.class_id) setItem("class_id", payload.class_id);
       state.userMessage.employee = payload?.employee;
-      window.localStorage.setItem("employee", JSON.stringify(payload.employee));
+      if (payload.employee) setItem("employee", payload.employee);
       state.userMessage.studentId = payload?.studentId;
-      window.localStorage.setItem(
-        "studentId",
-        JSON.stringify(payload.studentId)
-      );
+      if (payload.studentId) setItem("studentId", payload.studentId);
       state.userMessage.id = payload?.id;
-      window.localStorage.setItem("id", JSON.stringify(payload.id));
+      if (payload.id) setItem("id", payload.id);
       state.userMessage.name = payload?.name;
-      window.localStorage.setItem("name", JSON.stringify(payload.name));
+      if (payload.name) setItem("name", payload.name);
       state.userMessage.phone = payload?.phone;
-      window.localStorage.setItem("phone", JSON.stringify(payload.phone));
+      if (payload.phone) setItem("phone", payload.phone);
       state.userMessage.role = payload?.role;
-      window.localStorage.setItem("role", JSON.stringify(payload.role));
+      if (payload.role) setItem("role", payload.role);
       state.userMessage.token = payload?.token;
-      window.localStorage.setItem("token", JSON.stringify(payload.token));
+      if (payload.token) setItem("token", payload.token);
     },
   },
 });

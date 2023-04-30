@@ -1,82 +1,93 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  getTeacherQueryQuestionnaireList,
+  getQueryQueDetail,
+  getQueryStarList,
+  getQueryStudentNeedList,
+  getQueryQueTopic,
+} from "../../servers";
+
+export const fetchQueryQuestionnaireList = createAsyncThunk(
+  "/questionnaire/list",
+  async (payload, { dispatch }) => {
+    // 请求问卷列表
+    const res = await getTeacherQueryQuestionnaireList(payload);
+    // 请求收藏列表
+    const res2 = await getQueryStarList();
+    // 查询相同的数组
+    res2.data?.forEach?.((item) => {
+      res.data?.forEach?.((item2) => {
+        if (item.id === item2.id) {
+          item2.star = 1;
+        }
+      });
+    });
+    dispatch(changeQuestionsAction(res.data));
+  }
+);
+
+// 请求问卷详情
+export const fetchQueryQueDetail = createAsyncThunk(
+  "/query/que/detail",
+  async (payload, { dispatch }) => {
+    // 请求问卷详情
+    const res = await getQueryQueDetail(payload);
+    dispatch(changeQuestionsDetailDataAction(res.data));
+  }
+);
+// 请求问卷收藏列表
+export const fetchQueryStarList = createAsyncThunk(
+  "query/star/list",
+  async (_, { dispatch }) => {
+    const res = await getQueryStarList();
+    dispatch(changeQuestionsStarList(res.data));
+  }
+);
+// 请求学生需要填写的问卷列表
+export const fetchStudentNeedList = createAsyncThunk(
+  "query/need/que",
+  async (_, { dispatch }) => {
+    const res = await getQueryStudentNeedList();
+    dispatch(changeQuestionsAction(res.data));
+  }
+);
+// 拉取学生问卷题目
+export const fetchQueryQueTopic = createAsyncThunk(
+  "query/que/topic",
+  async (payload, { dispatch }) => {
+    const res = await getQueryQueTopic(payload);
+    dispatch(changeStudentTopicList(res.data));
+  }
+);
 
 const questionnaireSlice = createSlice({
   name: "questionnaire",
   initialState: {
-    questions: [
-      {
-        id: "001",
-        name: "大学生恋爱观调查问卷",
-        involve: "八一班, 八二班, 七一班",
-        type: "问卷类型",
-        status: true,
-        reply: "30",
-        author: "李平",
-        star: true,
-        date: "2022-2-2",
-      },
-      {
-        id: "002",
-        name: "嗨呀,好想要刘云龙啊",
-        involve: "全体学生",
-        status: false,
-        reply: "30",
-        author: "富从意",
-        date: "2022-2-2",
-      },
-      {
-        id: "003",
-        name: "我薛剪学历到底是不是小学",
-        involve: "八年级组, 九年级组",
-        status: false,
-        reply: "30",
-        author: "薛剪",
-        date: "2022-2-2",
-      },
-      {
-        id: "004",
-        name: "不确定是不是这里",
-        involve: "八年级组",
-        status: false,
-        reply: "30",
-        author: "薛剪",
-        date: "2022-2-2",
-      },
-      {
-        id: "005",
-        name: "我看到几个人站在一起",
-        involve: "八年级组",
-        status: false,
-        reply: "30",
-        author: "薛剪",
-        date: "2022-2-2",
-      },
-      {
-        id: "006",
-        name: "他们拿着剪刀",
-        involve: "八年级组",
-        status: false,
-        reply: "30",
-        author: "薛剪",
-        date: "2022-2-2",
-      },
-      {
-        id: "007",
-        name: "摘走我的行李",
-        involve: "八年级组",
-        status: false,
-        reply: "30",
-        author: "薛剪",
-        date: "2022-2-2",
-      },
-    ],
+    questions: [],
+    questionsDetailData: {},
+    questionsStarList: [],
+    studentTopicList: [],
   },
-  action: {
+  reducers: {
     changeQuestionsAction(state, { payload }) {
       state.questions = payload;
+    },
+    changeQuestionsDetailDataAction(state, { payload }) {
+      state.questionsDetailData = payload;
+    },
+    changeQuestionsStarList(state, { payload }) {
+      state.questionsStarList = payload;
+    },
+    changeStudentTopicList(state, { payload }) {
+      state.studentTopicList = payload;
     },
   },
 });
 
 export default questionnaireSlice.reducer;
-export const { changeQuestionsAction } = questionnaireSlice.actions;
+export const {
+  changeQuestionsAction,
+  changeQuestionsDetailDataAction,
+  changeQuestionsStarList,
+  changeStudentTopicList,
+} = questionnaireSlice.actions;

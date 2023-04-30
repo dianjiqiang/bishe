@@ -1,1063 +1,236 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  getStudentList,
+  getQueryCharge,
+  getQueryCount,
+  getQueryQuestionnaireList,
+  getNeedStudentList,
+} from "@/servers";
+import { formatStudentListData } from "@/utils/format";
+
+// 获取一年级组数据
+export const getStudentListSeven = createAsyncThunk(
+  "get/studentlist",
+  async (_, store) => {
+    // 获取班级数据 班主任数据 班级已发放问卷 和已完成问卷
+    const list = await getStudentList(5);
+    const charge = await getQueryCharge(5);
+    const count = await getQueryCount(5);
+    const data = formatStudentListData(
+      list.data,
+      charge.data[0].name,
+      count.data[0].count,
+      5
+    );
+    const list2 = await getStudentList(6);
+    const charge2 = await getQueryCharge(6);
+    const count2 = await getQueryCount(6);
+    const data2 = formatStudentListData(
+      list2.data,
+      charge2.data[0].name,
+      count2.data[0].count,
+      6
+    );
+    const list3 = await getStudentList(7);
+    const charge3 = await getQueryCharge(7);
+    const count3 = await getQueryCount(7);
+    const data3 = formatStudentListData(
+      list3.data,
+      charge3.data[0].name,
+      count3.data[0].count,
+      7
+    );
+    store.dispatch(changeSevenAction([data, data2, data3]));
+  }
+);
+// 获取二年级组数据
+export const getStudentListEight = createAsyncThunk(
+  "get/studentlist",
+  async (_, store) => {
+    // 获取班级数据 班主任数据 班级已发放问卷 和已完成问卷
+    const list = await getStudentList(8);
+    const charge = await getQueryCharge(8);
+    const count = await getQueryCount(8);
+    const data = formatStudentListData(
+      list.data,
+      charge.data[0].name,
+      count.data[0].count,
+      8
+    );
+    const list2 = await getStudentList(9);
+    const charge2 = await getQueryCharge(9);
+    const count2 = await getQueryCount(9);
+    const data2 = formatStudentListData(
+      list2.data,
+      charge2.data[0].name,
+      count2.data[0].count,
+      9
+    );
+    const list3 = await getStudentList(10);
+    const charge3 = await getQueryCharge(10);
+    const count3 = await getQueryCount(10);
+    const data3 = formatStudentListData(
+      list3.data,
+      charge3.data[0].name,
+      count3.data[0].count,
+      7
+    );
+    store.dispatch(changeEightAction([data, data2, data3]));
+  }
+);
+// 获取三级组数据
+export const getStudentListNinth = createAsyncThunk(
+  "get/studentlist",
+  async (_, store) => {
+    // 获取班级数据 班主任数据 班级已发放问卷 和已完成问卷
+    const list = await getStudentList(11);
+    const charge = await getQueryCharge(11);
+    const count = await getQueryCount(11);
+    const data = formatStudentListData(
+      list.data,
+      charge.data[0].name,
+      count.data[0].count,
+      11
+    );
+    const list2 = await getStudentList(12);
+    const charge2 = await getQueryCharge(12);
+    const count2 = await getQueryCount(12);
+    const data2 = formatStudentListData(
+      list2.data,
+      charge2.data[0].name,
+      count2.data[0].count,
+      12
+    );
+    const list3 = await getStudentList(13);
+    const charge3 = await getQueryCharge(13);
+    const count3 = await getQueryCount(13);
+    const data3 = formatStudentListData(
+      list3.data,
+      charge3.data[0].name,
+      count3.data[0].count,
+      13
+    );
+    store.dispatch(changeNinthAction([data, data2, data3]));
+  }
+);
+// 根据学生id获取对应的问卷
+export const getStudentQueryDetail = createAsyncThunk(
+  "/get/student/detail",
+  async (payload, { dispatch }) => {
+    const data = await getQueryQuestionnaireList(payload);
+    // 分配数据
+    dispatch(changeStudentEditDetailList(data.data));
+  }
+);
+// 获取学生需要填写的问卷
+export const fetchNeedStudentList = createAsyncThunk(
+  "/get/sutdent/need/list",
+  async (_, { dispatch }) => {
+    const data = await getNeedStudentList();
+    dispatch(changeNeedStudentQue(data.data));
+  }
+);
 
 const studentsSlice = createSlice({
-  name: 'student',
+  name: "student",
   initialState: {
     seven: [
       {
-        name: '七一班',
-        headTeacher: '李平',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: '旅行者',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            studentID: '2019108107',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          },
-          {
-            key: '12',
-            studentID: '2019108107',
-            name: '奎爷',
-            gender: '男',
-            finished: 22,
-            recently: '哥哥猛不猛',
-            quality: '差'
-          },
-          {
-            key: '13',
-            studentID: '2019108107',
-            name: '刘云龙',
-            gender: '男',
-            finished: 21,
-            recently: '妈的,摆',
-            quality: '差'
-          },
-          {
-            key: '14',
-            studentID: '2019108107',
-            name: '李云龙',
-            gender: '男',
-            finished: 23,
-            recently: '谁他妈和我名字这么像',
-            quality: '差'
-          }
-        ]
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
       },
       {
-        name: '七二班',
-        headTeacher: '薛检',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: '高海千歌',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          }
-        ]
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
       },
       {
-        name: '七三班',
-        headTeacher: '富从意',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: 'Miku',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            studentID: '2019108107',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          }
-        ]
-      }
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
+      },
     ],
     eight: [
       {
-        name: '八一班',
-        headTeacher: '刘云龙',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: '旅行者',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            studentID: '2019108107',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          },
-          {
-            key: '12',
-            studentID: '2019108107',
-            name: '奎爷',
-            gender: '男',
-            finished: 22,
-            recently: '哥哥猛不猛',
-            quality: '差'
-          },
-          {
-            key: '13',
-            studentID: '2019108107',
-            name: '刘云龙',
-            gender: '男',
-            finished: 21,
-            recently: '妈的,摆',
-            quality: '差'
-          },
-          {
-            key: '14',
-            studentID: '2019108107',
-            name: '李云龙',
-            gender: '男',
-            finished: 23,
-            recently: '谁他妈和我名字这么像',
-            quality: '差'
-          }
-        ]
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
       },
       {
-        name: '八二班',
-        headTeacher: '薛检',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: '高海千歌',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          }
-        ]
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
       },
       {
-        name: '八三班',
-        headTeacher: '富从意',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: 'Miku',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            studentID: '2019108107',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          }
-        ]
-      }
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
+      },
     ],
     ninth: [
       {
-        name: '九一班',
-        headTeacher: '潘雪雷',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: '旅行者',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            studentID: '2019108107',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          },
-          {
-            key: '12',
-            studentID: '2019108107',
-            name: '奎爷',
-            gender: '男',
-            finished: 22,
-            recently: '哥哥猛不猛',
-            quality: '差'
-          },
-          {
-            key: '13',
-            studentID: '2019108107',
-            name: '刘云龙',
-            gender: '男',
-            finished: 21,
-            recently: '妈的,摆',
-            quality: '差'
-          },
-          {
-            key: '14',
-            studentID: '2019108107',
-            name: '李云龙',
-            gender: '男',
-            finished: 23,
-            recently: '谁他妈和我名字这么像',
-            quality: '差'
-          }
-        ]
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
       },
       {
-        name: '九二班',
-        headTeacher: '薛检',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: '高海千歌',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          }
-        ]
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
       },
       {
-        name: '九三班',
-        headTeacher: '富从意',
-        distributed: 31,
-        allNumber: 15,
-        students: [
-          {
-            key: '1',
-            studentID: '2019108107',
-            name: 'Miku',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '2',
-            studentID: '2019108107',
-            name: '莫娜',
-            gender: '女',
-            finished: 30,
-            recently: '你是妹妹还是哥哥',
-            quality: '优'
-          },
-          {
-            key: '3',
-            studentID: '2019108107',
-            name: '琴',
-            gender: '女',
-            finished: 29,
-            recently: '弹琴是不是吹箫',
-            quality: '中'
-          },
-          {
-            key: '4',
-            studentID: '2019108107',
-            name: '派蒙',
-            gender: '女',
-            finished: 27,
-            recently: '我不是应急食品',
-            quality: '差'
-          },
-          {
-            key: '5',
-            studentID: '2019108107',
-            name: '迪卢克',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '6',
-            studentID: '2019108107',
-            name: '温迪',
-            gender: '男',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '7',
-            studentID: '2019108107',
-            name: '可莉',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '8',
-            studentID: '2019108107',
-            name: '阿贝多',
-            gender: '男',
-            finished: 15,
-            recently: '听说我是废物',
-            quality: '差'
-          },
-          {
-            key: '9',
-            studentID: '2019108107',
-            name: '优菈',
-            gender: '女',
-            finished: 31,
-            recently: '暴雪到底是不是傻逼',
-            quality: '优'
-          },
-          {
-            key: '10',
-            studentID: '2019108107',
-            name: '申鹤',
-            gender: '女',
-            finished: 20,
-            recently: '你穿着暴露吗?',
-            quality: '差'
-          },
-          {
-            key: '11',
-            studentID: '2019108107',
-            name: '甘雨',
-            gender: '女',
-            finished: 22,
-            recently: '你和申鹤是不是传的一条裤子',
-            quality: '差'
-          }
-        ]
-      }
-    ]
+        name: "",
+        headTeacher: "",
+        distributed: 0,
+        allNumber: 0,
+        students: [],
+      },
+    ],
+    detailList: [],
+    needStudentQue: [],
   },
-  action: {
+  reducers: {
     changeSevenAction(state, { payload }) {
-      state.seven = payload
-    }
-  }
-})
+      state.seven = payload;
+    },
+    changeEightAction(state, { payload }) {
+      state.eight = payload;
+    },
+    changeNinthAction(state, { payload }) {
+      state.ninth = payload;
+    },
+    changeStudentEditDetailList(state, { payload }) {
+      state.detailList = payload;
+    },
+    changeNeedStudentQue(state, { payload }) {
+      state.needStudentQue = payload;
+    },
+  },
+});
 
-export default studentsSlice.reducer
+export default studentsSlice.reducer;
 
-export const { changeSevenAction } = studentsSlice.actions
+export const {
+  changeSevenAction,
+  changeEightAction,
+  changeNinthAction,
+  changeStudentEditDetailList,
+  changeNeedStudentQue,
+} = studentsSlice.actions;

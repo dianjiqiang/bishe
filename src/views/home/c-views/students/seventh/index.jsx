@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState, useCallback, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { SeventhStyle } from "./style";
+import { getStudentListSeven } from "@/store/module/students";
 
 import HomeTop from "@/components/home-top";
 import HomeTable from "@/components/home-table";
@@ -8,13 +9,22 @@ import HomeTable from "@/components/home-table";
 import { dataKey } from "./data.config";
 
 const Seventh = memo(() => {
-  const { seven } = useSelector((state) => ({
-    seven: state.students.seven,
-  }));
+  const dispatch = useDispatch();
+  const { seven } = useSelector(
+    (state) => ({
+      seven: state.students.seven,
+    }),
+    shallowEqual
+  );
   const [options, setOptions] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [plus, setPlus] = useState([]);
   const tableDataRef = useRef(); //保存原数据
+
+  // 发起网络请求
+  useEffect(() => {
+    dispatch(getStudentListSeven());
+  }, [dispatch]);
   // 第一次进入
   useEffect(() => {
     setOptions(
@@ -108,11 +118,11 @@ const Seventh = memo(() => {
   return (
     <SeventhStyle>
       <HomeTop
-        title="七年级组"
+        title="一年级组"
         options={options}
         optionsTootip={"请选择班级"}
         changeOption={changeOption}
-        defaultValue="七一班"
+        defaultValue="一(1)班"
         plus={plus}
         searchUser={searchUser}
       ></HomeTop>

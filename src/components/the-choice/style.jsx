@@ -1,6 +1,14 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const TheChoiceStyle = styled.div`
+  .delete-topic {
+    :hover {
+      text-decoration: underline;
+    }
+    cursor: pointer;
+    user-select: none;
+    color: #ff4d4f;
+  }
   margin-top: 30px;
   .title {
     padding-bottom: 5px !important;
@@ -16,4 +24,4 @@ export const TheChoiceStyle = styled.div`
   .Mui-disabled {
     font-size: 14px;
   }
-`
+`;
